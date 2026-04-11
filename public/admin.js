@@ -85,6 +85,7 @@ function renderTeams() {
       <select data-team-field="cardId" data-team-id="${team.id}">
         ${adminState.data.cards.map((card) => `<option value="${card.id}" ${team.cardId === card.id ? 'selected' : ''}>${card.name}</option>`).join('')}
       </select>
+      <button type="button" class="danger-button team-remove-button" data-team-remove="${team.id}" ${adminState.data.teams.length <= 1 ? 'disabled' : ''}>Odebrat</button>
     `;
     teamsList.appendChild(row);
   });
@@ -286,6 +287,33 @@ async function uploadImage() {
 
 teamsList.addEventListener('input', markDirty);
 teamsList.addEventListener('change', markDirty);
+teamsList.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-team-remove]');
+  if (!button) {
+    return;
+  }
+
+  const teamId = button.dataset.teamRemove;
+  const team = adminState.data.teams.find((item) => item.id === teamId);
+  if (!team) {
+    return;
+  }
+
+  if (adminState.data.teams.length <= 1) {
+    editorMessage.textContent = 'Musí zůstat alespoň jeden tým.';
+    return;
+  }
+
+  const confirmed = window.confirm(`Odebrat tým "${team.name}"?`);
+  if (!confirmed) {
+    return;
+  }
+
+  adminState.data.teams = adminState.data.teams.filter((item) => item.id !== teamId);
+  markDirty();
+  renderTeams();
+  editorMessage.textContent = 'Tým byl odebrán z formuláře. Nezapomeň změnu uložit.';
+});
 rowBonusInput.addEventListener('input', markDirty);
 
 document.getElementById('add-team-button').addEventListener('click', () => {
