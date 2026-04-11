@@ -5,8 +5,8 @@
     "cells": [
       {
         "id": "cell-0",
-        "title": "Úkol 1.1",
-        "description": "Popis úkolu pro kartu 1, řádek 1, sloupec 1.",
+        "title": "úkol 1",
+        "description": "Jdětě na Ještěd",
         "type": "hard",
         "basePoints": 3,
         "fixedDeadline": "",
@@ -17,8 +17,8 @@
       },
       {
         "id": "cell-1",
-        "title": "Úkol 1.2",
-        "description": "Popis úkolu pro kartu 1, řádek 1, sloupec 2.",
+        "title": "Úkol 2",
+        "description": "Jděte na holubník",
         "type": "easy",
         "basePoints": 1,
         "fixedDeadline": "",
@@ -79,7 +79,7 @@
         "id": "cell-6",
         "title": "Úkol 1.7",
         "description": "Popis úkolu pro kartu 1, řádek 2, sloupec 2.",
-        "type": "easy",
+        "type": "hard",
         "basePoints": 1,
         "fixedDeadline": "",
         "openLimitMinutes": 0,
@@ -223,7 +223,7 @@
         "id": "cell-18",
         "title": "Úkol 1.19",
         "description": "Popis úkolu pro kartu 1, řádek 4, sloupec 4.",
-        "type": "easy",
+        "type": "hard",
         "basePoints": 1,
         "fixedDeadline": "",
         "openLimitMinutes": 0,
@@ -311,8 +311,8 @@
     "cells": [
       {
         "id": "cell-0",
-        "title": "Úkol 2.1",
-        "description": "Popis úkolu pro kartu 2, řádek 1, sloupec 1.",
+        "title": "2",
+        "description": "Jděte na náměstí",
         "type": "hard",
         "basePoints": 3,
         "fixedDeadline": "",

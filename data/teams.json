@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "team-1775917663801",
+    "name": "Tým 1",
+    "password": "1234",
+    "cardId": "card-1"
+  },
+  {
+    "id": "team-1775917665563",
+    "name": "Tým 2",
+    "password": "heslo",
+    "cardId": "card-1"
+  },
+  {
+    "id": "team-1775917666611",
+    "name": "Tým 3",
+    "password": "heslo",
+    "cardId": "card-1"
+  },
+  {
+    "id": "team-1775917667417",
+    "name": "Tým 4",
+    "password": "heslo",
+    "cardId": "card-1"
+  },
+  {
+    "id": "team-1775917668665",
+    "name": "Tým 5",
+    "password": "heslo",
+    "cardId": "card-1"
+  }
+]
