@@ -71,12 +71,7 @@ Image používá `node:20-alpine`, která je vhodná i pro ARM zařízení včet
 
 Výchozí admin heslo je `87654321`.
 
-Ukázkové týmy:
-
-- `Orli / orli`
-- `Rysi / rysi`
-- `Vlci / vlci`
-- `Lišky / lisky`
+Po prvním spuštění není vytvořený žádný tým. Týmy založ admin v `/admin-panel.html`.
 
 ## Jak funguje ukládání dat
 

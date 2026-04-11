@@ -36,12 +36,7 @@ function ensureDataFiles() {
     version: 1
   });
 
-  writeJsonIfMissing(FILES.teams, [
-    { id: 'team-1', name: 'Orli', password: 'orli', cardId: 'card-1' },
-    { id: 'team-2', name: 'Rysi', password: 'rysi', cardId: 'card-2' },
-    { id: 'team-3', name: 'Vlci', password: 'vlci', cardId: 'card-3' },
-    { id: 'team-4', name: 'Lišky', password: 'lisky', cardId: 'card-4' }
-  ]);
+  writeJsonIfMissing(FILES.teams, []);
 
   writeJsonIfMissing(FILES.cards, createDefaultCards());
   writeJsonIfMissing(FILES.gameState, createEmptyGameState());
