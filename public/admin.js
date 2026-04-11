@@ -1,7 +1,8 @@
 const adminState = {
   data: null,
   selectedCardIndex: 0,
-  selectedCellIndex: 0
+  selectedCellIndex: 0,
+  hasUnsavedChanges: false
 };
 
 const teamsList = document.getElementById('teams-list');
@@ -30,7 +31,31 @@ function currentCell() {
   return currentCard().cells[adminState.selectedCellIndex];
 }
 
-async function fetchAdminState() {
+function markDirty() {
+  adminState.hasUnsavedChanges = true;
+}
+
+function clearDirty() {
+  adminState.hasUnsavedChanges = false;
+}
+
+function updateCellPreview() {
+  const cell = currentCell();
+
+  if (cell.image) {
+    cellPreview.classList.remove('hidden');
+    cellPreview.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url("${cell.image}")`;
+  } else {
+    cellPreview.classList.add('hidden');
+    cellPreview.style.backgroundImage = '';
+  }
+}
+
+async function fetchAdminState(force = false) {
+  if (adminState.hasUnsavedChanges && !force) {
+    return true;
+  }
+
   const response = await fetch('/admin/state', { credentials: 'include' });
   if (response.status === 401) {
     window.location.href = '/admin';
@@ -44,6 +69,7 @@ async function fetchAdminState() {
   renderCardTabs();
   renderCardGrid();
   fillEditor();
+  clearDirty();
   return true;
 }
 
@@ -132,14 +158,7 @@ function fillEditor() {
   cellFastBonusMinutesInput.value = cell.fastBonusMinutes;
   cellFastBonusPointsInput.value = cell.fastBonusPoints;
   cellImageInput.value = cell.image || '';
-
-  if (cell.image) {
-    cellPreview.classList.remove('hidden');
-    cellPreview.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url("${cell.image}")`;
-  } else {
-    cellPreview.classList.add('hidden');
-    cellPreview.style.backgroundImage = '';
-  }
+  updateCellPreview();
 }
 
 function saveEditorToState() {
@@ -172,6 +191,7 @@ function collectTeamsFromForm() {
 
 async function saveCards() {
   saveEditorToState();
+  clearDirty();
   editorMessage.textContent = 'Ukládám karty...';
 
   const response = await fetch('/admin/save-cards', {
@@ -184,12 +204,13 @@ async function saveCards() {
   const data = await response.json();
   editorMessage.textContent = response.ok ? 'Karty uloženy.' : (data.error || 'Uložení selhalo.');
   if (response.ok) {
-    await fetchAdminState();
+    await fetchAdminState(true);
   }
 }
 
 async function saveTeams() {
   saveEditorToState();
+  clearDirty();
   const response = await fetch('/admin/save-teams', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -203,7 +224,7 @@ async function saveTeams() {
   const data = await response.json();
   editorMessage.textContent = response.ok ? 'Týmy a nastavení uloženy.' : (data.error || 'Uložení selhalo.');
   if (response.ok) {
-    await fetchAdminState();
+    await fetchAdminState(true);
   }
 }
 
@@ -235,8 +256,9 @@ async function uploadImage() {
     }
 
     cellImageInput.value = data.imagePath;
+    markDirty();
     saveEditorToState();
-    fillEditor();
+    updateCellPreview();
     renderCardGrid();
     editorMessage.textContent = 'Obrázek nahrán. Nezapomeň uložit karty.';
   };
@@ -255,11 +277,16 @@ async function uploadImage() {
   cellImageInput
 ].forEach((input) => {
   input.addEventListener('input', () => {
+    markDirty();
     saveEditorToState();
-    fillEditor();
+    updateCellPreview();
     renderCardGrid();
   });
 });
+
+teamsList.addEventListener('input', markDirty);
+teamsList.addEventListener('change', markDirty);
+rowBonusInput.addEventListener('input', markDirty);
 
 document.getElementById('add-team-button').addEventListener('click', () => {
   const nextIndex = adminState.data.teams.length + 1;
@@ -269,6 +296,7 @@ document.getElementById('add-team-button').addEventListener('click', () => {
     password: 'heslo',
     cardId: adminState.data.cards[0].id
   });
+  markDirty();
   renderTeams();
 });
 
@@ -277,8 +305,9 @@ document.getElementById('save-teams-button').addEventListener('click', saveTeams
 document.getElementById('upload-image-button').addEventListener('click', uploadImage);
 document.getElementById('clear-image-button').addEventListener('click', () => {
   cellImageInput.value = '';
+  markDirty();
   saveEditorToState();
-  fillEditor();
+  updateCellPreview();
   renderCardGrid();
 });
 
@@ -290,7 +319,7 @@ document.getElementById('end-game-button').addEventListener('click', async () =>
   const data = await response.json();
   editorMessage.textContent = response.ok ? 'Hra ukončena.' : (data.error || 'Akce selhala.');
   if (response.ok) {
-    await fetchAdminState();
+    await fetchAdminState(true);
   }
 });
 
@@ -307,15 +336,17 @@ document.getElementById('reset-game-button').addEventListener('click', async () 
   const data = await response.json();
   editorMessage.textContent = response.ok ? 'Rozehraná hra resetována.' : (data.error || 'Akce selhala.');
   if (response.ok) {
-    await fetchAdminState();
+    await fetchAdminState(true);
   }
 });
 
-document.getElementById('admin-refresh-button').addEventListener('click', fetchAdminState);
+document.getElementById('admin-refresh-button').addEventListener('click', () => fetchAdminState(true));
 document.getElementById('admin-logout-button').addEventListener('click', async () => {
   await fetch('/admin/logout', { method: 'POST', credentials: 'include' });
   window.location.href = '/admin';
 });
 
-fetchAdminState();
-setInterval(fetchAdminState, 3000);
+fetchAdminState(true);
+setInterval(() => {
+  fetchAdminState(false);
+}, 3000);
