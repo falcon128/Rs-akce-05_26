@@ -80,9 +80,9 @@ function renderTeams() {
     const row = document.createElement('div');
     row.className = 'team-row';
     row.innerHTML = `
-      <input data-team-field="name" data-team-id="${team.id}" value="${team.name}">
-      <input data-team-field="password" data-team-id="${team.id}" value="${team.password}">
-      <select data-team-field="cardId" data-team-id="${team.id}">
+      <input class="team-name-input" data-team-field="name" data-team-id="${team.id}" value="${team.name}">
+      <input class="team-password-input" data-team-field="password" data-team-id="${team.id}" value="${team.password}">
+      <select class="team-card-select" data-team-field="cardId" data-team-id="${team.id}">
         ${adminState.data.cards.map((card) => `<option value="${card.id}" ${team.cardId === card.id ? 'selected' : ''}>${card.name}</option>`).join('')}
       </select>
       <button type="button" class="danger-button team-remove-button" data-team-remove="${team.id}" ${adminState.data.teams.length <= 1 ? 'disabled' : ''}>Odebrat</button>

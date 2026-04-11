@@ -72,7 +72,7 @@ select {
 }
 
 .admin-layout {
-  grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
 }
 
 .login-page,
@@ -440,8 +440,25 @@ p {
 
 .team-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 120px 110px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.team-row > * {
+  min-width: 0;
+  width: 100%;
+}
+
+.team-card-select {
+  grid-column: 1;
+}
+
+.team-remove-button {
+  grid-column: 2;
 }
 
 .card-tabs {
@@ -521,5 +538,10 @@ p {
 
   .team-row {
     grid-template-columns: 1fr;
+  }
+
+  .team-card-select,
+  .team-remove-button {
+    grid-column: auto;
   }
 }
