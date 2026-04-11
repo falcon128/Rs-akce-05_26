@@ -1,0 +1,525 @@
+:root {
+  --bg: #f4f7fb;
+  --panel: #ffffff;
+  --panel-alt: #e9eef6;
+  --text: #152033;
+  --muted: #5f6e84;
+  --line: #d6deea;
+  --accent: #2457d6;
+  --accent-dark: #173b93;
+  --success: #2f8f4f;
+  --danger: #b73e3e;
+  --warning: #d07a21;
+  --timed: #c74646;
+  --closed-easy: linear-gradient(135deg, #fdfefe, #dce9ff);
+  --closed-hard: linear-gradient(135deg, #d4e4ff, #8fb3f2);
+  --closed-timed: linear-gradient(135deg, #ffd6d6, #f08d8d);
+  --shadow: 0 18px 50px rgba(17, 31, 54, 0.08);
+  --radius: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(36, 87, 214, 0.16), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(47, 143, 79, 0.12), transparent 28%),
+    var(--bg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.topbar,
+.login-shell,
+.app-layout,
+.admin-layout {
+  width: min(1200px, calc(100% - 24px));
+  margin: 0 auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0 14px;
+}
+
+.app-layout,
+.admin-layout,
+.login-shell {
+  display: grid;
+  gap: 18px;
+  padding-bottom: 28px;
+}
+
+.app-layout {
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+}
+
+.admin-layout {
+  grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
+}
+
+.login-page,
+.admin-page,
+.app-page {
+  min-height: 100vh;
+}
+
+.login-shell {
+  min-height: 100vh;
+  align-items: center;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 420px);
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(214, 222, 234, 0.9);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: 18px;
+  backdrop-filter: blur(12px);
+}
+
+.hero-panel {
+  padding: 28px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+.lead,
+.muted,
+.message,
+.task-description,
+.hint-box span {
+  color: var(--muted);
+}
+
+.hint-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--panel-alt);
+}
+
+.stack {
+  display: grid;
+  gap: 14px;
+}
+
+.compact {
+  gap: 10px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.primary-button,
+.secondary-button,
+.success-button,
+.warning-button,
+.danger-button {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: #fff;
+}
+
+.secondary-button {
+  background: #edf2fb;
+  color: var(--text);
+}
+
+.success-button {
+  background: var(--success);
+  color: #fff;
+}
+
+.warning-button {
+  background: var(--warning);
+  color: #fff;
+}
+
+.danger-button {
+  background: var(--danger);
+  color: #fff;
+}
+
+.button-row,
+.badge-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.button-row.wrap {
+  flex-wrap: wrap;
+}
+
+.admin-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.panel-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #ecf2ff;
+  padding: 10px 13px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.banner {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff2db;
+  color: #83520d;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.card-cell {
+  min-height: 70px;
+  border: 0;
+  border-radius: 18px;
+  padding: 10px;
+  font-size: 0.83rem;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.card-cell strong {
+  display: block;
+}
+
+.card-cell small {
+  display: block;
+  opacity: 0.9;
+}
+
+.card-cell.is-closed.easy {
+  background: var(--closed-easy);
+}
+
+.card-cell.is-closed.hard {
+  background: var(--closed-hard);
+}
+
+.card-cell.is-closed.timed {
+  background: var(--closed-timed);
+}
+
+.card-cell.is-open {
+  background: #f8fbff;
+  border: 1px solid #c9daff;
+}
+
+.card-cell.is-completed {
+  background: linear-gradient(135deg, #d7f4dd, #8fd1a0);
+  color: #11351b;
+}
+
+.card-cell.is-expired {
+  background: linear-gradient(135deg, #e7e7e7, #bdbdbd);
+  color: #364049;
+}
+
+.card-cell.has-image::before,
+.task-image::before,
+.cell-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+}
+
+.card-cell > span,
+.card-cell > div {
+  position: relative;
+  z-index: 1;
+}
+
+.leaderboard-list {
+  display: grid;
+  gap: 10px;
+}
+
+.leaderboard-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.leaderboard-rank {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf2fb;
+  font-weight: 700;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 40;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 15, 28, 0.6);
+}
+
+.modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(720px, calc(100% - 20px));
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.task-image,
+.cell-preview {
+  min-height: 180px;
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #e8effa;
+}
+
+.task-content {
+  padding: 18px;
+}
+
+.task-type {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.task-meta {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.task-meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.task-meta dt {
+  font-weight: 700;
+}
+
+.task-meta dd {
+  margin: 0;
+  text-align: right;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.admin-sidebar,
+.admin-main,
+.game-panel,
+.leaderboard-panel {
+  min-width: 0;
+}
+
+.teams-list {
+  display: grid;
+  gap: 10px;
+}
+
+.team-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  gap: 8px;
+}
+
+.card-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.card-tab {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.card-tab.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.admin-grid-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 360px);
+  gap: 16px;
+}
+
+.admin-grid .card-cell {
+  min-height: 86px;
+}
+
+.card-cell.selected {
+  outline: 3px solid var(--accent);
+}
+
+.cell-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-login-wrap {
+  width: min(460px, calc(100% - 24px));
+  margin: 0 auto;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 980px) {
+  .app-layout,
+  .admin-layout,
+  .login-shell,
+  .admin-grid-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .card-cell {
+    min-height: 58px;
+    border-radius: 14px;
+    font-size: 0.72rem;
+    padding: 8px;
+  }
+
+  .task-actions,
+  .button-row,
+  .badge-row {
+    flex-wrap: wrap;
+  }
+
+  .team-row {
+    grid-template-columns: 1fr;
+  }
+}

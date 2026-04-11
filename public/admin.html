@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Městská hra - admin login</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body class="admin-page">
+    <main class="admin-login-wrap">
+      <section class="panel admin-login-panel">
+        <p class="eyebrow">Admin</p>
+        <h1>Vstup do správy hry</h1>
+        <form id="admin-login-form" class="stack">
+          <label class="field">
+            <span>Admin heslo</span>
+            <input id="admin-password" type="password" required>
+          </label>
+          <button type="submit" class="primary-button">Přihlásit</button>
+          <p id="admin-login-message" class="message"></p>
+        </form>
+        <p class="muted">Po správném hesle se otevře druhá stránka s admin nástroji.</p>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('admin-login-form');
+      const message = document.getElementById('admin-login-message');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        message.textContent = 'Přihlašuji...';
+
+        const response = await fetch('/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            password: document.getElementById('admin-password').value
+          })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          message.textContent = data.error || 'Přihlášení selhalo.';
+          return;
+        }
+
+        window.location.href = '/admin-panel.html';
+      });
+    </script>
+  </body>
+</html>

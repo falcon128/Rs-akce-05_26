@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Městská hra - admin panel</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body class="admin-page">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Admin rozhraní</p>
+        <h1>Editor karet a týmů</h1>
+      </div>
+      <div class="button-row">
+        <button id="admin-refresh-button" class="secondary-button">Obnovit</button>
+        <button id="admin-logout-button" class="secondary-button">Odhlásit</button>
+      </div>
+    </header>
+
+    <main class="admin-layout">
+      <section class="panel admin-sidebar">
+        <h2>Nastavení hry</h2>
+        <div class="stack compact">
+          <label class="field">
+            <span>Bonus za řadu</span>
+            <input id="row-bonus-input" type="number" min="0">
+          </label>
+        </div>
+
+        <div class="stack compact">
+          <h2>Týmy</h2>
+          <div id="teams-list" class="teams-list"></div>
+          <button id="add-team-button" class="secondary-button">Přidat tým</button>
+          <button id="save-teams-button" class="primary-button">Uložit týmy a nastavení</button>
+        </div>
+
+        <div class="stack compact">
+          <h2>Průběh hry</h2>
+          <div id="admin-scoreboard" class="leaderboard-list"></div>
+          <button id="end-game-button" class="warning-button">Ukončit hru</button>
+          <button id="reset-game-button" class="danger-button">Resetovat rozehranou hru</button>
+        </div>
+      </section>
+
+      <section class="panel admin-main">
+        <div class="panel-header">
+          <div>
+            <h2>Karty</h2>
+            <p class="muted">Klikni na políčko, uprav detail a ulož celou sadu karet.</p>
+          </div>
+          <button id="save-cards-button" class="primary-button">Uložit karty</button>
+        </div>
+
+        <div id="card-tabs" class="card-tabs"></div>
+        <div class="admin-grid-wrap">
+          <div id="admin-card-grid" class="card-grid admin-grid"></div>
+
+          <form id="cell-editor" class="cell-editor">
+            <h3 id="editor-title">Vyber políčko</h3>
+            <label class="field">
+              <span>Název úkolu</span>
+              <input id="cell-title-input" type="text">
+            </label>
+            <label class="field">
+              <span>Text zadání</span>
+              <textarea id="cell-description-input" rows="6"></textarea>
+            </label>
+            <label class="field">
+              <span>Typ políčka</span>
+              <select id="cell-type-input">
+                <option value="easy">Lehké</option>
+                <option value="hard">Složité</option>
+                <option value="timed">Časované</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Základní body</span>
+              <input id="cell-points-input" type="number" min="0">
+            </label>
+            <label class="field">
+              <span>Pevný deadline</span>
+              <input id="cell-deadline-input" type="datetime-local">
+            </label>
+            <label class="field">
+              <span>Limit od otevření (minuty)</span>
+              <input id="cell-open-limit-input" type="number" min="0">
+            </label>
+            <label class="field">
+              <span>Rychlý bonus do (minuty)</span>
+              <input id="cell-fast-bonus-minutes-input" type="number" min="0">
+            </label>
+            <label class="field">
+              <span>Rychlý bonus body</span>
+              <input id="cell-fast-bonus-points-input" type="number" min="0">
+            </label>
+
+            <div class="field">
+              <span>Obrázek pozadí</span>
+              <div class="button-row wrap">
+                <input id="cell-image-upload" type="file" accept="image/*">
+                <button id="upload-image-button" type="button" class="secondary-button">Nahrát obrázek</button>
+                <button id="clear-image-button" type="button" class="secondary-button">Smazat obrázek</button>
+              </div>
+              <input id="cell-image-input" type="text" placeholder="/uploads/..." readonly>
+            </div>
+
+            <div id="cell-preview" class="cell-preview hidden"></div>
+            <p id="editor-message" class="message"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="/admin.js"></script>
+  </body>
+</html>

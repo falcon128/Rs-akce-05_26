@@ -1,0 +1,33 @@
+{
+  "version": 4,
+  "teams": {
+    "team-1": {
+      "cells": {
+        "cell-0": {
+          "openedAt": 1775908666901,
+          "completedAt": null,
+          "expiredAt": null
+        },
+        "cell-7": {
+          "openedAt": 1775908671597,
+          "completedAt": null,
+          "expiredAt": null
+        },
+        "cell-13": {
+          "openedAt": 1775908674063,
+          "completedAt": null,
+          "expiredAt": null
+        }
+      }
+    },
+    "team-2": {
+      "cells": {}
+    },
+    "team-3": {
+      "cells": {}
+    },
+    "team-4": {
+      "cells": {}
+    }
+  }
+}

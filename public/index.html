@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Městská hra - karta týmu</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body class="app-page">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Týmová městská hra</p>
+        <h1 id="team-title">Načítání...</h1>
+      </div>
+      <button id="logout-button" class="secondary-button">Odhlásit</button>
+    </header>
+
+    <main class="app-layout">
+      <section class="panel game-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Moje karta</h2>
+            <p id="game-meta" class="muted"></p>
+          </div>
+          <div class="badge-row">
+            <span id="score-badge" class="stat-badge">0 bodů</span>
+            <span id="task-badge" class="stat-badge">0 úkolů</span>
+          </div>
+        </div>
+
+        <div id="game-alert" class="banner hidden"></div>
+        <div id="card-grid" class="card-grid"></div>
+      </section>
+
+      <aside class="panel leaderboard-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Leaderboard</h2>
+            <p class="muted">Aktualizace přes polling</p>
+          </div>
+        </div>
+        <div id="leaderboard-list" class="leaderboard-list"></div>
+      </aside>
+    </main>
+
+    <div id="task-modal" class="modal hidden">
+      <div class="modal-backdrop" data-close-modal></div>
+      <section class="modal-card">
+        <button class="modal-close" data-close-modal>&times;</button>
+        <div id="task-image" class="task-image hidden"></div>
+        <div class="task-content">
+          <p id="task-type" class="task-type"></p>
+          <h2 id="task-title"></h2>
+          <p id="task-description" class="task-description"></p>
+          <dl class="task-meta">
+            <div>
+              <dt>Body</dt>
+              <dd id="task-points"></dd>
+            </div>
+            <div>
+              <dt>Deadline</dt>
+              <dd id="task-deadline"></dd>
+            </div>
+            <div>
+              <dt>Limit od otevření</dt>
+              <dd id="task-open-limit"></dd>
+            </div>
+            <div>
+              <dt>Rychlý bonus</dt>
+              <dd id="task-bonus"></dd>
+            </div>
+            <div>
+              <dt>Stav</dt>
+              <dd id="task-state"></dd>
+            </div>
+          </dl>
+          <div class="task-actions">
+            <button id="open-task-button" class="primary-button">Otevřít úkol</button>
+            <button id="complete-task-button" class="success-button">Označit jako splněné</button>
+          </div>
+          <p id="task-message" class="message"></p>
+        </div>
+      </section>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

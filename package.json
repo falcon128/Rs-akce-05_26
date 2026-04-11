@@ -1,0 +1,10 @@
+{
+  "name": "city-task-game",
+  "version": "1.0.0",
+  "description": "Simple city task game for scout teams",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}

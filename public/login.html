@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Městská hra - přihlášení</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <section class="panel hero-panel">
+        <p class="eyebrow">Týmová městská hra</p>
+        <h1>Úkolová karta 5×5</h1>
+        <p class="lead">
+          Přihlas se názvem týmu a heslem. Po přihlášení uvidíš jen svou kartu a průběžný leaderboard.
+        </p>
+        <div class="hint-box">
+          <strong>Ukázkové týmy:</strong>
+          <span>Orli / orli</span>
+          <span>Rysi / rysi</span>
+          <span>Vlci / vlci</span>
+          <span>Lišky / lisky</span>
+        </div>
+      </section>
+
+      <section class="panel form-panel">
+        <form id="login-form" class="stack">
+          <h2>Přihlášení týmu</h2>
+          <label class="field">
+            <span>Název týmu</span>
+            <input type="text" id="team-name" autocomplete="username" required>
+          </label>
+          <label class="field">
+            <span>Heslo</span>
+            <input type="password" id="team-password" autocomplete="current-password" required>
+          </label>
+          <button type="submit" class="primary-button">Přihlásit</button>
+          <p id="login-message" class="message"></p>
+        </form>
+
+        <a class="admin-link" href="/admin">Admin rozhraní</a>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('login-form');
+      const message = document.getElementById('login-message');
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        message.textContent = 'Přihlašuji...';
+
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            name: document.getElementById('team-name').value,
+            password: document.getElementById('team-password').value
+          })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          message.textContent = data.error || 'Přihlášení selhalo.';
+          return;
+        }
+
+        window.location.href = '/index.html';
+      });
+    </script>
+  </body>
+</html>
