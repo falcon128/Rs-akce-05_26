@@ -5,9 +5,9 @@ WORKDIR /app
 COPY package.json ./
 COPY server.js ./
 COPY public ./public
-COPY data ./data
-COPY uploads ./uploads
+
+RUN mkdir -p /app/data /app/uploads
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "server.js"]

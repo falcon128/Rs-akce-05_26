@@ -1,0 +1,14 @@
+services:
+  app:
+    image: ghcr.io/falcon128/rs-akce-05_26:latest
+    container_name: rs-akce
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - app-data:/app/data
+      - app-uploads:/app/uploads
+
+volumes:
+  app-data:
+  app-uploads:
