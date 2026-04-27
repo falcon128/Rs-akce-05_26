@@ -69,7 +69,7 @@ Image používá `node:20-alpine`, která je vhodná i pro ARM zařízení včet
 - Admin login: `/admin`
 - Admin panel po přihlášení: `/admin-panel.html`
 
-Výchozí admin heslo je `87654321`.
+Výchozí admin heslo je `bosákješpek`.
 
 Po prvním spuštění není vytvořený žádný tým. Týmy založ admin v `/admin-panel.html`.
 

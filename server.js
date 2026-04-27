@@ -30,7 +30,7 @@ function ensureDataFiles() {
   fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
   writeJsonIfMissing(FILES.config, {
-    adminPassword: '87654321',
+    adminPassword: 'bosákješpek',
     rowBonus: 10,
     gameEnded: false,
     version: 1
@@ -143,7 +143,7 @@ function loadAllData() {
   }
 
   if (!data.config.adminPassword) {
-    data.config.adminPassword = '87654321';
+    data.config.adminPassword = 'bosákješpek';
     changed = true;
   }
 
