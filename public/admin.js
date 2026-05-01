@@ -12,6 +12,8 @@ const adminCardGrid = document.getElementById('admin-card-grid');
 const editorTitle = document.getElementById('editor-title');
 const editorMessage = document.getElementById('editor-message');
 const rowBonusInput = document.getElementById('row-bonus-input');
+const revertTeamSelect = document.getElementById('revert-team-select');
+const revertTaskList = document.getElementById('revert-task-list');
 const cellTitleInput = document.getElementById('cell-title-input');
 const cellDescriptionInput = document.getElementById('cell-description-input');
 const cellTypeInput = document.getElementById('cell-type-input');
@@ -64,13 +66,25 @@ async function fetchAdminState(force = false) {
 
   adminState.data = await response.json();
   rowBonusInput.value = adminState.data.config.rowBonus;
+  if (!adminState.selectedRevertTeamId || !adminState.data.teams.some((team) => team.id === adminState.selectedRevertTeamId)) {
+    adminState.selectedRevertTeamId = adminState.data.teams[0] ? adminState.data.teams[0].id : '';
+  }
   renderTeams();
   renderScoreboard();
+  renderRevertTools();
   renderCardTabs();
   renderCardGrid();
   fillEditor();
   clearDirty();
   return true;
+}
+
+function getSelectedTeamSummary() {
+  if (!adminState.data || !Array.isArray(adminState.data.teamSummaries)) {
+    return null;
+  }
+
+  return adminState.data.teamSummaries.find((summary) => summary.teamId === adminState.selectedRevertTeamId) || null;
 }
 
 function renderTeams() {
@@ -106,6 +120,47 @@ function renderScoreboard() {
       <div><strong>${item.score}</strong> b</div>
     `;
     adminScoreboard.appendChild(row);
+  });
+}
+
+function renderRevertTools() {
+  revertTeamSelect.innerHTML = '';
+  revertTaskList.innerHTML = '';
+
+  if (!adminState.data.teams.length) {
+    revertTeamSelect.disabled = true;
+    revertTaskList.innerHTML = '<p class="muted">Nejsou založené žádné týmy.</p>';
+    return;
+  }
+
+  revertTeamSelect.disabled = false;
+  adminState.data.teams.forEach((team) => {
+    const option = document.createElement('option');
+    option.value = team.id;
+    option.textContent = team.name;
+    option.selected = team.id === adminState.selectedRevertTeamId;
+    revertTeamSelect.appendChild(option);
+  });
+
+  const summary = getSelectedTeamSummary();
+  const completedCells = summary ? summary.cells.filter((cell) => cell.state === 'completed') : [];
+
+  if (!completedCells.length) {
+    revertTaskList.innerHTML = '<p class="muted">Vybraný tým teď nemá žádný splněný úkol k vrácení.</p>';
+    return;
+  }
+
+  completedCells.forEach((cell) => {
+    const row = document.createElement('div');
+    row.className = 'revert-task-row';
+    row.innerHTML = `
+      <div>
+        <strong>${cell.title}</strong>
+        <div class="muted">${cell.basePoints} b · ${cell.type}</div>
+      </div>
+      <button type="button" class="warning-button revert-task-button" data-team-id="${summary.teamId}" data-cell-id="${cell.id}">Vrátit</button>
+    `;
+    revertTaskList.appendChild(row);
   });
 }
 
@@ -229,6 +284,21 @@ async function saveTeams() {
   }
 }
 
+async function revertCompletedTask(teamId, cellId) {
+  const response = await fetch('/admin/revert-task', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ teamId, cellId })
+  });
+
+  const data = await response.json();
+  editorMessage.textContent = response.ok ? 'Splnění bylo vráceno zpět.' : (data.error || 'Akce selhala.');
+  if (response.ok) {
+    await fetchAdminState(true);
+  }
+}
+
 async function uploadImage() {
   const fileInput = document.getElementById('cell-image-upload');
   const file = fileInput.files[0];
@@ -315,6 +385,25 @@ teamsList.addEventListener('click', (event) => {
   editorMessage.textContent = 'Tým byl odebrán z formuláře. Nezapomeň změnu uložit.';
 });
 rowBonusInput.addEventListener('input', markDirty);
+revertTeamSelect.addEventListener('change', () => {
+  adminState.selectedRevertTeamId = revertTeamSelect.value;
+  renderRevertTools();
+});
+revertTaskList.addEventListener('click', async (event) => {
+  const button = event.target.closest('.revert-task-button');
+  if (!button) {
+    return;
+  }
+
+  const teamId = button.dataset.teamId;
+  const cellId = button.dataset.cellId;
+  const confirmed = window.confirm('Opravdu vrátit tento úkol ze splněného zpět?');
+  if (!confirmed) {
+    return;
+  }
+
+  await revertCompletedTask(teamId, cellId);
+});
 
 document.getElementById('add-team-button').addEventListener('click', () => {
   const nextIndex = adminState.data.teams.length + 1;

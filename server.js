@@ -825,13 +825,20 @@ function handleAdminState(req, res) {
 
   const data = loadAllData();
   applyExpirations(data);
+  const teamSummaries = data.teams.map((team) => {
+    const card = getCardById(data.cards, team.cardId) || data.cards[0];
+    const bucket = getTeamStateBucket(data.gameState, team.id);
+    return buildTeamSummary(team, card, bucket, data.config);
+  });
+
   sendJson(res, 200, {
     version: data.config.version,
     config: data.config,
     teams: data.teams,
     cards: data.cards,
     leaderboard: buildLeaderboard(data),
-    gameState: data.gameState
+    gameState: data.gameState,
+    teamSummaries
   });
 }
 
@@ -899,6 +906,41 @@ async function handleAdminEndGame(req, res) {
 
   const data = loadAllData();
   data.config.gameEnded = true;
+  bumpVersion(data);
+  saveAllData(data);
+  sendJson(res, 200, { ok: true, version: data.config.version });
+}
+
+async function handleAdminRevertTask(req, res) {
+  if (!requireAdmin(req, res)) {
+    return;
+  }
+
+  const body = await parseJsonBody(req);
+  const teamId = String(body.teamId || '');
+  const cellId = String(body.cellId || '');
+  const data = loadAllData();
+  applyExpirations(data);
+
+  const team = data.teams.find((item) => item.id === teamId);
+  const card = team ? getCardById(data.cards, team.cardId) : null;
+  if (!team || !card) {
+    sendJson(res, 404, { error: 'Tým nebo karta nebyly nalezeny.' });
+    return;
+  }
+
+  const cell = card.cells.find((item) => item.id === cellId);
+  const bucket = getTeamStateBucket(data.gameState, team.id);
+  const progress = cell ? bucket.cells[cell.id] : null;
+
+  if (!cell || !progress || !progress.completedAt) {
+    sendJson(res, 400, { error: 'Vybraný úkol není označený jako splněný.' });
+    return;
+  }
+
+  progress.completedAt = null;
+  progress.expiredAt = null;
+
   bumpVersion(data);
   saveAllData(data);
   sendJson(res, 200, { ok: true, version: data.config.version });
@@ -1010,6 +1052,11 @@ async function routeRequest(req, res) {
 
     if (req.method === 'POST' && url.pathname === '/admin/end-game') {
       await handleAdminEndGame(req, res);
+      return;
+    }
+
+    if (req.method === 'POST' && url.pathname === '/admin/revert-task') {
+      await handleAdminRevertTask(req, res);
       return;
     }
 

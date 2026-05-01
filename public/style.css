@@ -461,6 +461,35 @@ p {
   grid-column: 2;
 }
 
+.admin-correction-box {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.admin-correction-box h3 {
+  margin: 0;
+}
+
+.revert-task-list {
+  display: grid;
+  gap: 8px;
+}
+
+.revert-task-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
 .card-tabs {
   display: flex;
   flex-wrap: wrap;

@@ -38,6 +38,15 @@
         <div class="stack compact">
           <h2>Průběh hry</h2>
           <div id="admin-scoreboard" class="leaderboard-list"></div>
+          <div class="admin-correction-box">
+            <h3>Vrátit splnění</h3>
+            <label class="field">
+              <span>Tým</span>
+              <select id="revert-team-select"></select>
+            </label>
+            <div id="revert-task-list" class="revert-task-list"></div>
+            <p class="muted">Úkol se vrátí ze splněného zpět. Pokud už mezitím vypršel čas, po přepočtu spadne do propadlého.</p>
+          </div>
           <button id="end-game-button" class="warning-button">Ukončit hru</button>
           <button id="reset-game-button" class="danger-button">Resetovat rozehranou hru</button>
         </div>
