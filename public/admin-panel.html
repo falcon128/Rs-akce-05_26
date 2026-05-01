@@ -53,6 +53,23 @@
       </section>
 
       <section class="panel admin-main">
+        <div class="panel admin-live-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Aktuální karty týmů</h2>
+              <p class="muted">Jen ke čtení. Admin tady vidí živý stav rozehrané karty vybraného týmu.</p>
+            </div>
+          </div>
+          <div class="admin-live-controls">
+            <label class="field">
+              <span>Tým</span>
+              <select id="live-team-select"></select>
+            </label>
+          </div>
+          <div id="live-team-meta" class="muted"></div>
+          <div id="live-team-grid" class="card-grid admin-live-grid"></div>
+        </div>
+
         <div class="panel-header">
           <div>
             <h2>Karty</h2>

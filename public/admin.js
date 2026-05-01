@@ -14,6 +14,9 @@ const editorMessage = document.getElementById('editor-message');
 const rowBonusInput = document.getElementById('row-bonus-input');
 const revertTeamSelect = document.getElementById('revert-team-select');
 const revertTaskList = document.getElementById('revert-task-list');
+const liveTeamSelect = document.getElementById('live-team-select');
+const liveTeamMeta = document.getElementById('live-team-meta');
+const liveTeamGrid = document.getElementById('live-team-grid');
 const cellTitleInput = document.getElementById('cell-title-input');
 const cellDescriptionInput = document.getElementById('cell-description-input');
 const cellTypeInput = document.getElementById('cell-type-input');
@@ -69,9 +72,13 @@ async function fetchAdminState(force = false) {
   if (!adminState.selectedRevertTeamId || !adminState.data.teams.some((team) => team.id === adminState.selectedRevertTeamId)) {
     adminState.selectedRevertTeamId = adminState.data.teams[0] ? adminState.data.teams[0].id : '';
   }
+  if (!adminState.selectedLiveTeamId || !adminState.data.teams.some((team) => team.id === adminState.selectedLiveTeamId)) {
+    adminState.selectedLiveTeamId = adminState.data.teams[0] ? adminState.data.teams[0].id : '';
+  }
   renderTeams();
   renderScoreboard();
   renderRevertTools();
+  renderLiveTeamView();
   renderCardTabs();
   renderCardGrid();
   fillEditor();
@@ -161,6 +168,52 @@ function renderRevertTools() {
       <button type="button" class="warning-button revert-task-button" data-team-id="${summary.teamId}" data-cell-id="${cell.id}">Vrátit</button>
     `;
     revertTaskList.appendChild(row);
+  });
+}
+
+function renderLiveTeamView() {
+  liveTeamSelect.innerHTML = '';
+  liveTeamGrid.innerHTML = '';
+  liveTeamMeta.textContent = '';
+
+  if (!adminState.data.teams.length) {
+    liveTeamSelect.disabled = true;
+    liveTeamMeta.textContent = 'Nejsou založené žádné týmy.';
+    return;
+  }
+
+  liveTeamSelect.disabled = false;
+  adminState.data.teams.forEach((team) => {
+    const option = document.createElement('option');
+    option.value = team.id;
+    option.textContent = team.name;
+    option.selected = team.id === adminState.selectedLiveTeamId;
+    liveTeamSelect.appendChild(option);
+  });
+
+  const summary = adminState.data.teamSummaries.find((item) => item.teamId === adminState.selectedLiveTeamId);
+  if (!summary) {
+    liveTeamMeta.textContent = 'Stav týmu se nepodařilo načíst.';
+    return;
+  }
+
+  liveTeamMeta.textContent = `${summary.teamName} · ${summary.score} bodů · ${summary.completedTasks} splněno · ${summary.completedLines} řad`;
+
+  summary.cells.forEach((cell, index) => {
+    const button = document.createElement('div');
+    button.className = `card-cell is-${cell.state} ${cell.type} ${cell.image ? 'has-image' : ''}`;
+
+    if (cell.image) {
+      button.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.9)), url("${cell.image}")`;
+    }
+
+    if (cell.state === 'closed') {
+      button.innerHTML = `<div><strong>${index + 1}</strong><small>${cell.type}</small></div>`;
+    } else {
+      button.innerHTML = `<div><strong>${cell.title}</strong><small>${cell.state}</small></div>`;
+    }
+
+    liveTeamGrid.appendChild(button);
   });
 }
 
@@ -388,6 +441,10 @@ rowBonusInput.addEventListener('input', markDirty);
 revertTeamSelect.addEventListener('change', () => {
   adminState.selectedRevertTeamId = revertTeamSelect.value;
   renderRevertTools();
+});
+liveTeamSelect.addEventListener('change', () => {
+  adminState.selectedLiveTeamId = liveTeamSelect.value;
+  renderLiveTeamView();
 });
 revertTaskList.addEventListener('click', async (event) => {
   const button = event.target.closest('.revert-task-button');

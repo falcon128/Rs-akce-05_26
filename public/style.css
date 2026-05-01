@@ -490,6 +490,23 @@ p {
   background: #fff;
 }
 
+.admin-live-panel {
+  margin-bottom: 18px;
+}
+
+.admin-live-controls {
+  max-width: 260px;
+  margin-bottom: 10px;
+}
+
+.admin-live-grid {
+  margin-top: 12px;
+}
+
+.admin-live-grid .card-cell {
+  cursor: default;
+}
+
 .card-tabs {
   display: flex;
   flex-wrap: wrap;
