@@ -224,7 +224,13 @@ function clearSession(res, kind, req) {
 }
 
 function sendJson(res, statusCode, data) {
-  res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'private, no-store, max-age=0, must-revalidate',
+    Pragma: 'no-cache',
+    Expires: '0',
+    Vary: 'Cookie'
+  });
   res.end(JSON.stringify(data));
 }
 

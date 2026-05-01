@@ -184,7 +184,10 @@ function renderModal() {
 }
 
 async function fetchTeamState() {
-  const response = await fetch('/team-state', { credentials: 'include' });
+  const response = await fetch('/team-state', {
+    credentials: 'include',
+    cache: 'no-store'
+  });
   if (response.status === 401) {
     window.location.href = '/login.html';
     return false;
@@ -207,7 +210,10 @@ async function fetchTeamState() {
 }
 
 async function fetchLeaderboard() {
-  const response = await fetch('/leaderboard', { credentials: 'include' });
+  const response = await fetch('/leaderboard', {
+    credentials: 'include',
+    cache: 'no-store'
+  });
   const data = await response.json();
   state.leaderboard = data.leaderboard;
   renderLeaderboard();
